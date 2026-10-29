@@ -1,1 +1,13 @@
-groups: []
+groups:
+  - name: slo-tareas-api
+    rules:
+      - alert: TasaDeErroresAlta
+        expr: |
+          sum(rate(http_request_duration_seconds_count{codigo=~"5.."}[5m]))
+          / sum(rate(http_request_duration_seconds_count[5m])) > 0.05
+        for: 2m
+        labels:
+          severidad: critica
+        annotations:
+          resumen: "Más del 5 % de las peticiones falla hace 2 minutos"
+          accion: "Revisar el tablero y buscar la traza de una petición fallida"

@@ -4,7 +4,9 @@ async function avisar(req, tarea) {
     const headers = {
       "Content-Type": "application/json",
     };
-    if (process.env.PROPAGAR_CORRELACION !== "false" && req.idCorrelacion) {
+    // Soporte para romper la propagación a propósito (Laboratorio 2, Paso 6)
+    const romper = process.env.PROPAGAR_CORRELACION === "false" || req.headers["x-romper-correlacion"] === "true";
+    if (!romper && req.idCorrelacion) {
       headers["x-correlation-id"] = req.idCorrelacion;
     }
     const r = await fetch("http://localhost:3001/avisos", {

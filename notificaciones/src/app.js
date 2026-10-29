@@ -36,11 +36,6 @@ app.get("/salud", (_req, res) => {
 app.post("/avisos", async (req, res) => {
   const { tarea } = req.body;
 
-  // Lentitud artificial del Laboratorio 5: se activa con DEMORA_ARTIFICIAL=true o 1400ms
-  if (process.env.DEMORA_ARTIFICIAL === "true") {
-    await new Promise((r) => setTimeout(r, 1400));
-  }
-
   if (req.registro) {
     req.registro.info(
       { tareaId: tarea ? tarea.id : null, titulo: tarea ? tarea.titulo : null },
